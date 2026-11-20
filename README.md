@@ -1,89 +1,77 @@
-﻿# LabTrack v5 - Iteration 5
+﻿LabTrack Build 5
+================
 
-Iteration 5 of LabTrack. Imported from labtrack 5 on 2026-11-20.
+Build 5 landed on 2026-11-20.
+Rollup compared against **labtrack 4**.
 
-Compared against: **labtrack 4**.
+TL;DR
+-----
 
-## Snapshot
+Backend saw 0 edits and 0 additions.
+Frontend saw 4 edits and 0 additions.
+Project files cleaned of stray Compile Include directives.
 
-- Backend controllers: **29**
-- Backend C# files: **459**
-- Frontend TS/TSX files: **72**
+Delta at a glance
+-----------------
 
-## Changes in v5 (vs labtrack 4)
+| Layer    | Edited | Added | Removed |
+|----------|--------|-------|---------|
+| Backend  | 0      | 0     | 0       |
+| Frontend | 4      | 0     | 0       |
 
-### Backend
+What moved in backend
+---------------------
 
-- **0** files modified
-- **0** new files
-- Compile Include directives cleaned (CS0101)
+* nothing edited
 
-### Frontend
+What moved in frontend
+----------------------
 
-- **4** files modified
-- **0** new files
+* frontend\src\components\auth\AuthLayout.tsx  [18971B vs 18590B]
+* frontend\src\layouts\LandingLayout.tsx  [12604B vs 8195B]
+* frontend\src\pages\landing\AboutPage.tsx  [31674B vs 21589B]
+* frontend\src\pages\landing\HomePage.tsx  [36081B vs 21094B]
 
-## Infrastructure
+Runtime checks
+--------------
 
-- Cleaned stray Compile Include directives from csproj
-- Removed bak and cleanup text artifacts
-- Updated .gitignore
+| Check                       | Expectation |
+|-----------------------------|-------------|
+| dotnet build (API project)  | succeeded   |
+| tsc --noEmit (frontend)     | 0 errors    |
+| /health/live                | 200 OK      |
+| /swagger/v1/swagger.json    | loads       |
 
-## Full details
+Code surface
+------------
 
-See [CHANGELOG-V5.md](./CHANGELOG-V5.md) for the complete per-file diff.
+- Controllers registered: 29
+- C# source files: 459
+- TS/TSX source files: 72
 
-## Controllers
+Rollout
+-------
 
-- AiAssistant
-- Analytics
-- Asset
-- Audit
-- Auth
-- ChainOfCustody
-- Communication
-- Financial
-- IdempotencyRecords
-- InstructorCommunication
-- Laboratories
-- Maintenance
-- MaintenanceRecord
-- MaintenanceRecords
-- Network
-- NetworkIncident
-- NetworkInfo
-- Notification
-- PcUsage
-- ProblemReport
-- QrAdmin
-- Qr
-- QrSession
-- RepairTicket
-- Replacement
-- ReplacementRecord
-- Reservation
-- Users
-- Workstations
-
-## Quick start
-
-Backend:
+Fire the API:
 
     cd backend/LabTrack.CSharp/src/LabTrack.Api
     dotnet run
 
-Frontend:
+Fire the SPA:
 
     cd frontend
-    npm install
-    npm run dev
+    npm install && npm run dev
 
-Endpoints:
+Hit these:
 
-- Frontend: http://localhost:3000
-- Swagger: http://localhost:5000/swagger
-- Health: http://localhost:5000/health/live
+- http://localhost:3000 (SPA)
+- http://localhost:5000/swagger (API surface)
+- http://localhost:5000/health/live (probe)
 
----
+Notes
+-----
 
-Generated: 2026-11-20 21:13:18
+Full per-file delta ships in CHANGELOG-V5.md.
+PR review notes ship in PR-BODY.md.
+
+Snapshot written 2026-11-20 21:16:19.

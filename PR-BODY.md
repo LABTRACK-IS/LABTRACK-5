@@ -1,64 +1,71 @@
-﻿## Summary
+﻿Reviewer Briefing - Build 5
 
-Iteration **v5** of LabTrack, imported from ``labtrack 5`` on 2026-11-20.
+Pulled from labtrack 5 on 2026-11-20.
+Baseline for comparison: labtrack 4.
 
-Compared against: **labtrack 4**.
+Scope
+-----
 
-## Change overview
+This is a delta review, not a full feature audit. Look at what shifted since the labtrack 4 snapshot.
 
-| Area | Modified | Added |
-|------|----------|-------|
-| Backend | **0** | **0** |
-| Frontend | **4** | **0** |
+Shift summary
+-------------
 
-Full per-file detail in [CHANGELOG-V5.md](./CHANGELOG-V5.md).
+| Layer    | Edited | Added | Removed |
+|----------|--------|-------|---------|
+| Backend  | 0      | 0     | 0       |
+| Frontend | 4      | 0     | 0       |
 
-## Backend - notable changes
+Backend touched files
+---------------------
 
-- (no backend modifications)
+* backend untouched
 
-### New backend files
+Backend arrivals
+----------------
 
-- (none)
+* no new backend files
 
-## Frontend - notable changes
+Frontend touched files
+----------------------
 
-- frontend\src\components\auth\AuthLayout.tsx (18971B)
-- frontend\src\layouts\LandingLayout.tsx (12604B)
-- frontend\src\pages\landing\AboutPage.tsx (31674B)
-- frontend\src\pages\landing\HomePage.tsx (36081B)
+* frontend\src\components\auth\AuthLayout.tsx  [18971B vs 18590B]
+* frontend\src\layouts\LandingLayout.tsx  [12604B vs 8195B]
+* frontend\src\pages\landing\AboutPage.tsx  [31674B vs 21589B]
+* frontend\src\pages\landing\HomePage.tsx  [36081B vs 21094B]
 
-### New frontend files
+Frontend arrivals
+-----------------
 
-- (none)
+* no new frontend files
 
-## QA checklist
+Reviewer moves
+--------------
 
-- [ ] dotnet build succeeds on backend
-- [ ] tsc --noEmit returns 0 errors on frontend
-- [ ] /health/live returns 200
-- [ ] No junk files (bak, cleanup) in git tree
-- [ ] Diff vs labtrack 4 is intentional
-- [ ] Swagger shows all controllers
+1. Backend build probe - run dotnet build from LabTrack.Api directory
+2. Frontend type probe - run npx tsc --noEmit inside frontend/
+3. Runtime probe - GET /health/live should return 200
+4. Swagger probe - GET /swagger/v1/swagger.json should load
+5. Tracked tree - confirm no bak, cleanup, node_modules, obj, bin
+6. Delta sanity - edits align with the labtrack 4 baseline
 
-## How to verify
+Local smoke test
+----------------
 
-Backend:
+API side:
 
     cd backend/LabTrack.CSharp/src/LabTrack.Api
     dotnet build && dotnet run
 
-Frontend (new terminal):
+SPA side (second terminal):
 
     cd frontend
     npm install && npm run dev
 
-Expected URLs:
+Expected surfaces:
 
-- http://localhost:3000 - frontend
-- http://localhost:5000/swagger - API docs
-- http://localhost:5000/health/live - 200 OK
+* SPA: http://localhost:3000
+* API docs: http://localhost:5000/swagger
+* Probe: http://localhost:5000/health/live
 
----
-
-Auto-generated on 2026-11-20 21:13:18
+Briefing generated 2026-11-20 21:16:19.

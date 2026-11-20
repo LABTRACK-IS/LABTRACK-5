@@ -32,13 +32,11 @@ Thumbs.db
 *.bak2
 *.bak-*
 cleanup-*.txt
-cleanup-report-*.txt
 
 _backup*/
 _v3_backup_*/
 _v4_backup_*/
 _v5_backup_*/
-_setup_backup_*/
 archives/
 temp/
 tmp/
