@@ -4,7 +4,6 @@ obj/
 .vs/
 *.dll
 *.pdb
-*.cache
 
 node_modules/
 dist/
@@ -30,12 +29,9 @@ Thumbs.db
 
 *.bak
 *.bak2
-*.bak-*
 cleanup-*.txt
 
 _backup*/
-_v3_backup_*/
-_v4_backup_*/
 _v5_backup_*/
 archives/
 temp/
