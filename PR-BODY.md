@@ -1,71 +1,113 @@
-﻿Reviewer Briefing - Build 5
+﻿Build 5 - Codebase State Review
 
-Pulled from labtrack 5 on 2026-11-20.
-Baseline for comparison: labtrack 4.
+Shipped from labtrack 5 on 2026-11-20.
+Reference baseline: labtrack 4.
 
-Scope
------
-
-This is a delta review, not a full feature audit. Look at what shifted since the labtrack 4 snapshot.
-
-Shift summary
--------------
-
-| Layer    | Edited | Added | Removed |
-|----------|--------|-------|---------|
-| Backend  | 0      | 0     | 0       |
-| Frontend | 4      | 0     | 0       |
-
-Backend touched files
----------------------
-
-* backend untouched
-
-Backend arrivals
+Reviewer context
 ----------------
 
-* no new backend files
+The delta vs labtrack 4 is minimal. This PR primarily serves as a **snapshot deployment** - the value of reviewing it is confirming the current state, not tracking new features.
 
-Frontend touched files
-----------------------
+What ships in this build
+------------------------
 
-* frontend\src\components\auth\AuthLayout.tsx  [18971B vs 18590B]
-* frontend\src\layouts\LandingLayout.tsx  [12604B vs 8195B]
-* frontend\src\pages\landing\AboutPage.tsx  [31674B vs 21589B]
-* frontend\src\pages\landing\HomePage.tsx  [36081B vs 21094B]
+Backend (.NET 8):
 
-Frontend arrivals
+* 29 controllers
+* 17 application services
+* 32 domain entities
+* 17 repositories
+* 10 EF Core migrations
+
+Frontend (React + Vite + TS):
+
+* 18 admin views
+* 11 instructor views
+* 3 custom hooks
+
+Python FastAPI microservice:
+
+* 7 API routes
+* 0 Python files
+
+Controller inventory
+--------------------
+
+* AiAssistant
+* Analytics
+* Asset
+* Audit
+* Auth
+* ChainOfCustody
+* Communication
+* Financial
+* IdempotencyRecords
+* InstructorCommunication
+* Laboratories
+* Maintenance
+* MaintenanceRecord
+* MaintenanceRecords
+* Network
+* NetworkIncident
+* NetworkInfo
+* Notification
+* PcUsage
+* ProblemReport
+* Qr
+* QrAdmin
+* QrSession
+* RepairTicket
+* Replacement
+* ReplacementRecord
+* Reservation
+* Users
+* Workstations
+
+Delta vs labtrack 4
+----------------
+
+| Layer    | Touched | Introduced |
+|----------|---------|------------|
+| Backend  | 0       | 0          |
+| Frontend | 4       | 0          |
+
+Touched paths (top 10):
+
+* F: frontend\src\components\auth\AuthLayout.tsx
+* F: frontend\src\layouts\LandingLayout.tsx
+* F: frontend\src\pages\landing\AboutPage.tsx
+* F: frontend\src\pages\landing\HomePage.tsx
+
+Reviewer protocol
 -----------------
 
-* no new frontend files
+1. dotnet build in LabTrack.Api - expect "Build succeeded"
+2. npx tsc --noEmit in frontend/ - expect 0 error TS lines
+3. GET /health/live - expect 200
+4. GET /swagger/v1/swagger.json - expect full controller surface
+5. git ls-files - confirm no bak, cleanup, node_modules, obj, bin
+6. Confirm controller inventory above matches what Swagger exposes
 
-Reviewer moves
---------------
-
-1. Backend build probe - run dotnet build from LabTrack.Api directory
-2. Frontend type probe - run npx tsc --noEmit inside frontend/
-3. Runtime probe - GET /health/live should return 200
-4. Swagger probe - GET /swagger/v1/swagger.json should load
-5. Tracked tree - confirm no bak, cleanup, node_modules, obj, bin
-6. Delta sanity - edits align with the labtrack 4 baseline
-
-Local smoke test
-----------------
-
-API side:
+Smoke test
+----------
 
     cd backend/LabTrack.CSharp/src/LabTrack.Api
     dotnet build && dotnet run
 
-SPA side (second terminal):
+Second terminal:
 
     cd frontend
     npm install && npm run dev
 
+Optional Python AI:
+
+    cd backend/LabTrack.Python
+    uvicorn app.main:app --reload
+
 Expected surfaces:
 
-* SPA: http://localhost:3000
-* API docs: http://localhost:5000/swagger
-* Probe: http://localhost:5000/health/live
+* SPA        http://localhost:3000
+* Swagger    http://localhost:5000/swagger
+* Health     http://localhost:5000/health/live
 
-Briefing generated 2026-11-20 21:16:19.
+Review compiled 2026-11-20 21:18:08.
