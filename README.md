@@ -1,77 +1,234 @@
-﻿LabTrack Build 5
-================
+﻿LabTrack - Architecture Snapshot (Build 5)
 
-Build 5 landed on 2026-11-20.
-Rollup compared against **labtrack 4**.
+This build is a state capture taken 2026-11-20.
+Baseline diff target: labtrack 4.
 
-TL;DR
------
+The codebase below is the current production-ready state. When diff against baseline is minimal, this document focuses on the architecture itself rather than the delta.
 
-Backend saw 0 edits and 0 additions.
-Frontend saw 4 edits and 0 additions.
-Project files cleaned of stray Compile Include directives.
+Delta note
+----------
 
-Delta at a glance
------------------
+Compared to labtrack 4:
 
-| Layer    | Edited | Added | Removed |
-|----------|--------|-------|---------|
-| Backend  | 0      | 0     | 0       |
-| Frontend | 4      | 0     | 0       |
+- Backend files modified: 0
+- Backend files added: 0
+- Frontend files modified: 4
+- Frontend files added: 0
 
-What moved in backend
+This is a **near-identical build** to labtrack 4. The architecture below describes the current codebase.
+
+Backend architecture
+--------------------
+
+Layers: Api / Application / Domain / Infrastructure
+Language: C# (.NET 8)
+Files: 459 source files
+
+### Controllers (29)
+
+- AiAssistant
+- Analytics
+- Asset
+- Audit
+- Auth
+- ChainOfCustody
+- Communication
+- Financial
+- IdempotencyRecords
+- InstructorCommunication
+- Laboratories
+- Maintenance
+- MaintenanceRecord
+- MaintenanceRecords
+- Network
+- NetworkIncident
+- NetworkInfo
+- Notification
+- PcUsage
+- ProblemReport
+- Qr
+- QrAdmin
+- QrSession
+- RepairTicket
+- Replacement
+- ReplacementRecord
+- Reservation
+- Users
+- Workstations
+
+### Application services (17)
+
+- AiAssistant
+- Analytics
+- Asset
+- Audit
+- Auth
+- Communication
+- Financial
+- Maintenance
+- Network
+- Notification
+- PcUsage
+- ProblemReport
+- Qr
+- RepairTicket
+- Replacement
+- Reservation
+- User
+
+### Domain entities (32)
+
+- AiChatMessage
+- AiChatSession
+- Asset
+- AuditLog
+- AuthSession
+- ChainOfCustodyEvent
+- Communication
+- ComponentReplacement
+- DamageAttribution
+- FinancialExpense
+- FinancialRecord
+- IdempotencyKey
+- InstructorCommunication
+- Laboratory
+- MaintenanceRecord
+- MaintenanceSchedule
+- NetworkDevice
+- NetworkIncident
+- Notification
+- PcTelemetryEvent
+- PcUsageLog
+- ProblemReport
+- QrCode
+- QrSession
+- RefreshToken
+- RepairTicket
+- ReplacementRecord
+- ReplacementRequest
+- Reservation
+- User
+- Workstation
+- WorkstationSession
+
+### Repositories (17)
+
+- AiChat
+- Asset
+- Audit
+- AuthSession
+- Communication
+- Financial
+- Laboratory
+- Maintenance
+- Network
+- Notification
+- PcUsage
+- ProblemReport
+- Qr
+- RepairTicket
+- Replacement
+- Reservation
+- User
+
+### EF Core migrations (10)
+
+- 20261024094702_FixShadowColumns
+- 20261024094702_FixShadowColumns.Designer
+- 20261024162809_AddNetworkDevices
+- 20261024162809_AddNetworkDevices.Designer
+- 20261024165714_AddPcUsageLogBaseEntityColumns
+- 20261024165714_AddPcUsageLogBaseEntityColumns.Designer
+- 20261024172815_DropShadowFkColumns-20261025012745
+- 20261024172815_DropShadowFkColumns-20261025012745.Designer
+- 20261025055855_AddReplacementRecordAndInstructorCommTables
+- 20261025055855_AddReplacementRecordAndInstructorCommTables.Designer
+
+Frontend architecture
 ---------------------
 
-* nothing edited
+Stack: React 18 + Vite + TypeScript
+Files: 72 source files
 
-What moved in frontend
-----------------------
+### Admin views (18)
 
-* frontend\src\components\auth\AuthLayout.tsx  [18971B vs 18590B]
-* frontend\src\layouts\LandingLayout.tsx  [12604B vs 8195B]
-* frontend\src\pages\landing\AboutPage.tsx  [31674B vs 21589B]
-* frontend\src\pages\landing\HomePage.tsx  [36081B vs 21094B]
+- AdminDashboard
+- AdminNotifications
+- AiAssistant
+- AnalyticsReports
+- AssetsWorkstationDesk
+- AuditLogs
+- CampusesLabs
+- FinancialReports
+- InventoryTransfer
+- IssueServiceDesk
+- Maintenance
+- NotificationsManagement
+- Overview
+- ProfileSettings
+- QrGeneratorModal
+- QrManagement
+- SessionsManagement
+- UserAccessManagement
 
-Runtime checks
---------------
+### Instructor views (11)
 
-| Check                       | Expectation |
-|-----------------------------|-------------|
-| dotnet build (API project)  | succeeded   |
-| tsc --noEmit (frontend)     | 0 errors    |
-| /health/live                | 200 OK      |
-| /swagger/v1/swagger.json    | loads       |
+- AiAssistant
+- InstructorDashboard
+- LabAvailability
+- MyRequests
+- Notifications
+- Overview
+- Profile
+- ReportProblem
+- Reservations
+- StudentSessions
+- UsageAnalytics
 
-Code surface
-------------
+### Custom hooks (3)
 
-- Controllers registered: 29
-- C# source files: 459
-- TS/TSX source files: 72
+- useNotificationPolling
+- usePcSession
+- useRealtime
 
-Rollout
--------
+Python microservice
+------------------
 
-Fire the API:
+Framework: FastAPI
+Files: 0 Python files
+
+### API routes (7)
+
+- /ai_chat
+- /asset
+- /damage
+- /health
+- /recommendations
+- /repair
+- /telemetry
+
+How to run
+----------
+
+API:
 
     cd backend/LabTrack.CSharp/src/LabTrack.Api
     dotnet run
 
-Fire the SPA:
+SPA:
 
     cd frontend
     npm install && npm run dev
 
-Hit these:
+Python AI:
 
-- http://localhost:3000 (SPA)
-- http://localhost:5000/swagger (API surface)
-- http://localhost:5000/health/live (probe)
+    cd backend/LabTrack.Python
+    uvicorn app.main:app --reload
 
-Notes
------
+Surfaces:
 
-Full per-file delta ships in CHANGELOG-V5.md.
-PR review notes ship in PR-BODY.md.
+- SPA        http://localhost:3000
+- Swagger    http://localhost:5000/swagger
+- Health     http://localhost:5000/health/live
 
-Snapshot written 2026-11-20 21:16:19.
+Snapshot created 2026-11-20 21:18:08.
